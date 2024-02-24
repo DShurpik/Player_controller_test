@@ -1,13 +1,13 @@
 package listeners;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import propertyReader.PropertyReader;
 
 import static propertyReader.PropertyReader.getIntProperty;
-@Slf4j
+@Log4j
 public class ListenerProperty implements ITestListener {
 
     @Override
@@ -46,12 +46,13 @@ public class ListenerProperty implements ITestListener {
                 .getSuite()
                 .getParameter("config") == null ? System.getProperty("config") : context.getSuite().getParameter("config");
         new PropertyReader(propertyName);
-        log.debug("Property file is: " + propertyName + ".properties");
+        log.info("Property file is: " + propertyName + ".properties");
         context.getSuite().getXmlSuite().setThreadCount(getIntProperty("thread.count"));
+        log.info("Suite name is: " + context.getSuite().getName());
     }
 
     @Override
     public void onFinish(ITestContext context) {
-        log.debug("Test suite " + context.getSuite().getName() + ".xml has been completed");
+        log.info("Test suite " + context.getSuite().getName() + " has been completed");
     }
 }

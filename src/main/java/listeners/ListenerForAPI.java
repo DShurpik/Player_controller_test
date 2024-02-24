@@ -1,31 +1,31 @@
 package listeners;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-@Slf4j
+@Log4j
 public class ListenerForAPI implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
         ITestListener.super.onTestStart(result);
-        log.debug(result.getName() + " has been started");
+        log.info(result.getName() + " has been started");
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        log.debug("This test has been completed => " + result.getName());
+        log.info("This test has been completed => " + result.getName());
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        log.debug("This test has been failed => " + result.getName());
+        log.info("This test has been failed => " + result.getName());
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        log.debug("This test has been skipped => " + result.getName());
+        log.info("This test has been skipped => " + result.getName());
     }
 
     @Override
