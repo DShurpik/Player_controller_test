@@ -1,4 +1,4 @@
-mvn clean ApiTest -DsuiteXml="Test" -Dconfig="ApiTest" 
-для запуска тестов из suit ApiTest.xml и конфигурацией ApiTest.properties
+mvn clean test -DsuiteXml="Test" -Dconfig="test" 
+для запуска тестов из suit ApiTest.xml и конфигурацией test.properties
 
 
