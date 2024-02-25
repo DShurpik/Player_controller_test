@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="PositiveApiTest" parallel="methods">
-    <test name="PositiveTest">
+<suite name="NegativeApiTests" parallel="methods">
+    <test name="NegativeTests">
         <classes>
-            <class name="Testsjust"/>
+            <class name="NegativeTests"/>
         </classes>
     </test>
 </suite>

@@ -1,4 +1,4 @@
-package models;
+package models.getByPlayerId.responses;
 
 public class PlayerByIdModel {
     private Integer id;

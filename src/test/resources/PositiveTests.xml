@@ -4,7 +4,8 @@
 <suite name="PositiveApiTest" parallel="methods">
     <test name="PositiveTest">
         <classes>
-            <class name="Testsjust"/>
+            <class name="CreateUserPositive"/>
+            <class name="DeleteTest"/>
         </classes>
     </test>
 </suite>

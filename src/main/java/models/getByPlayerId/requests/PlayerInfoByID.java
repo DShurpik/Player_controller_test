@@ -1,13 +1,13 @@
-package models;
+package models.getByPlayerId.requests;
 
-public class PlayerDelete {
+public class PlayerInfoByID {
     private Integer playerId;
 
-    public PlayerDelete(Integer playerId) {
+    public PlayerInfoByID(Integer playerId) {
         this.playerId = playerId;
     }
 
-    public PlayerDelete() {}
+    public PlayerInfoByID() {}
 
     public Integer getPlayerId() {
         return playerId;
