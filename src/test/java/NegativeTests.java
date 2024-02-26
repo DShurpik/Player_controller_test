@@ -10,6 +10,8 @@ import models.createUser.requests.CreateNewUser;
 import models.deleteUser.requests.PlayerDelete;
 import models.getAllPlayers.requests.PlayerHeader;
 import models.getByPlayerId.requests.PlayerInfoByID;
+import models.updatePlayer.requests.UpdateUserModel;
+import models.updatePlayer.responses.UpdateUserResponse;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -30,14 +32,16 @@ public class NegativeTests extends BaseTest {
     @Test
     public void getAllUsersNegative() {
         Specifications.installSpecifications(Specifications.requestSpecification(),
-                Specifications.responseSpecification406());
+                Specifications.responseSpecification());
 
         PlayerHeader playerHeader = new PlayerHeader(properties);
 
         given()
                 .when()
                 .header(playerHeader.getKeyName(), playerHeader.getKeyValue())
-                .get("get/all");
+                .get("get/all")
+                .then()
+                .statusCode(406);
     }
 
     @Description("Delete non-create user on id")
@@ -54,13 +58,13 @@ public class NegativeTests extends BaseTest {
         IntRandom intRandom = new IntRandom();
         int randomValue = intRandom.generateRandomNumber();
 
-        PlayerDelete playerDelete = new PlayerDelete(randomValue);
+        PlayerDelete playerDelete = new PlayerDelete(randomValue, properties);
 
         given()
                 .contentType(ContentType.JSON)
                 .body(playerDelete)
-                .pathParam("role", "supervisor")
-                .delete("delete/{role}");
+                .pathParam("editor", properties.getProperty("api.supervisor.login"))
+                .delete("delete/{editor}");
     }
 
     @Description("Creating a new user with age equals 16")
@@ -78,8 +82,9 @@ public class NegativeTests extends BaseTest {
 
         createNewUser
                 .createUserRequestSpecification()
+                .pathParam("editor", properties.getProperty("api.supervisor.login"))
                 .when()
-                .get("/create/" + properties.getProperty("api.supervisor.login"));
+                .get("/create/{editor}");
     }
 
     @Description("Getting a user info by random user ID")
@@ -105,5 +110,28 @@ public class NegativeTests extends BaseTest {
 
         response.then().extract().body().asString();
         Assert.assertTrue(response.getBody().asString().isEmpty());
+    }
+
+    @Description("Updating user info with random ID or non-created user")
+    @Severity(SeverityLevel.NORMAL)
+    @Feature("Checking that user info has been patched")
+    @Story("Patching user info")
+    @Issue("Using non-create user id, random integer, but status code is 200 BUG!")
+    @TmsLink("TMS-8")
+    @Test
+    public void updatePlayerInfoNegative() {
+        Specifications.installSpecifications(Specifications.requestSpecification(),
+                Specifications.responseSpecification200());
+
+        UpdateUserModel updateUserModel = new UpdateUserModel();
+
+        IntRandom intRandom = new IntRandom();
+
+        given()
+                .pathParam("editor", properties.getProperty("api.supervisor.login"))
+                .pathParam("id", intRandom.generateRandomNumber())
+                .body(updateUserModel)
+                .when()
+                .patch("update/{editor}/{id}");
     }
 }

@@ -1,6 +1,5 @@
 import baseTestPages.BaseTest;
 import io.qameta.allure.*;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import listeners.ListenerForAPI;
 import listeners.ListenerProperty;
@@ -9,8 +8,8 @@ import models.createUser.requests.CreateNewUser;
 import models.createUser.requests.CreateNewUserBeforeTest;
 import models.createUser.responses.NewUserModel;
 import models.deleteUser.requests.PlayerDelete;
-import models.getByPlayerId.requests.PlayerInfoByID;
-import models.getByPlayerId.responses.PlayerByIdModel;
+import models.updatePlayer.requests.UpdateUserModel;
+import models.updatePlayer.responses.UpdateUserResponse;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -23,9 +22,9 @@ import static io.restassured.RestAssured.given;
 @Log4j
 @Listeners({ListenerProperty.class, ListenerForAPI.class})
 
-public class GetUserInfoById extends BaseTest {
+public class UpdateUserInfo extends BaseTest {
 
-    private int userId;
+    private int userIdUpdate;
 
     @BeforeMethod
     public void createUser() {
@@ -33,13 +32,14 @@ public class GetUserInfoById extends BaseTest {
 
         NewUserModel newUserModel = createNewUser
                 .createUserRequestSpecification()
+                .pathParam("editor", properties.getProperty("api.supervisor.login"))
                 .when()
-                .get("/create/" + properties.getProperty("api.supervisor.login"))
+                .get("/create/{editor}")
                 .then()
                 .extract()
                 .as(NewUserModel.class);
 
-        userId = newUserModel.getId();
+        userIdUpdate = newUserModel.getId();
     }
 
     @AfterMethod
@@ -47,33 +47,37 @@ public class GetUserInfoById extends BaseTest {
         Specifications.installSpecifications(Specifications.requestSpecification(),
                 Specifications.responseSpecification204());
 
-        PlayerDelete playerDelete = new PlayerDelete(userId, properties);
+        PlayerDelete playerDelete = new PlayerDelete(userIdUpdate, properties);
         playerDelete.deleteUser(playerDelete);
     }
 
-    @Description("Getting a new user by user ID")
+    @Description("Updating user info")
     @Severity(SeverityLevel.NORMAL)
-    @Feature("Checking that user has been created with valid values")
-    @Story("Getting a new user by user ID")
+    @Feature("Checking that user info has been patched")
+    @Story("Pathcing user info")
     @Issue("")
     @TmsLink("TMS-8")
-    @Test(priority = 4)
-    public void getPlayerByPlayerId() {
+    @Test(priority = 5)
+    public void updatePlayerInfoPositive() {
         Specifications.installSpecifications(Specifications.requestSpecification(),
                 Specifications.responseSpecification200());
 
-        PlayerInfoByID playerInfoByID = new PlayerInfoByID(userId);
+        UpdateUserModel updateUserModel = new UpdateUserModel(properties);
 
         Response response = given()
-                .contentType(ContentType.JSON)
-                .body(playerInfoByID)
-                .post("get");
+                .pathParam("editor", properties.getProperty("api.supervisor.login"))
+                .pathParam("id", userIdUpdate)
+                .body(updateUserModel)
+                .when()
+                .patch("update/{editor}/{id}");
 
-        PlayerByIdModel player = response
+        UpdateUserResponse updateUserResponse = response
                 .then()
                 .extract()
-                .as(PlayerByIdModel.class);
+                .as(UpdateUserResponse.class);
 
-        Assert.assertEquals(player.getLogin(), properties.getProperty("api.before.login"));
+        Assert.assertEquals(updateUserResponse.getLogin(), "user_test");
+
+        userIdUpdate = updateUserResponse.getId();
     }
 }

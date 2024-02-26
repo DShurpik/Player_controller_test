@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 
-public class CreateNewUser {
+public class CreateNewUserBeforeTest {
 
     private int age;
     private String gender;
@@ -15,13 +15,13 @@ public class CreateNewUser {
     private String role;
     private String screenName;
 
-    public CreateNewUser(Properties properties) {
-        this.age = Integer.parseInt(properties.getProperty("api.create.age"));
-        this.gender = properties.getProperty("api.create.gender");
-        this.login = properties.getProperty("api.create.login");
-        this.password = properties.getProperty("api.create.password");
-        this.role = properties.getProperty("api.create.role");
-        this.screenName = properties.getProperty("api.create.screenName");
+    public CreateNewUserBeforeTest(Properties properties) {
+        this.age = Integer.parseInt(properties.getProperty("api.before.age"));
+        this.gender = properties.getProperty("api.before.gender");
+        this.login = properties.getProperty("api.before.login");
+        this.password = properties.getProperty("api.before.password");
+        this.role = properties.getProperty("api.before.role");
+        this.screenName = properties.getProperty("api.before.screenName");
     }
 
 

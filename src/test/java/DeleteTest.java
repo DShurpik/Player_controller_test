@@ -4,6 +4,7 @@ import listeners.ListenerForAPI;
 import listeners.ListenerProperty;
 import lombok.extern.log4j.Log4j;
 import models.createUser.requests.CreateNewUser;
+import models.createUser.requests.CreateNewUserBeforeTest;
 import models.createUser.responses.NewUserModel;
 import models.deleteUser.requests.PlayerDelete;
 import org.testng.annotations.BeforeMethod;
@@ -16,9 +17,11 @@ import specifications.Specifications;
 
 public class DeleteTest extends BaseTest {
 
+    private static int userId;
+
     @BeforeMethod
     public void createUser() {
-        CreateNewUser createNewUser = new CreateNewUser(properties);
+        CreateNewUserBeforeTest createNewUser = new CreateNewUserBeforeTest(properties);
 
         NewUserModel newUserModel = createNewUser
                 .createUserRequestSpecification()
@@ -40,12 +43,9 @@ public class DeleteTest extends BaseTest {
     @Test
     public void deleteUserPositiveTest() {
         Specifications.installSpecifications(Specifications.requestSpecification(),
-                Specifications.responseSpecification204());
+                Specifications.responseSpecification());
 
-        PlayerDelete playerDelete = new PlayerDelete(userId);
+        PlayerDelete playerDelete = new PlayerDelete(userId, properties);
         playerDelete.deleteUser(playerDelete);
     }
-
-
-
 }

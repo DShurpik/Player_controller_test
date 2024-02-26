@@ -2,11 +2,15 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
 <suite name="PositiveApiTest" parallel="methods">
-    <test name="PositiveTest">
+    <test name="Update info">
         <classes>
             <class name="CreateUserPositive"/>
             <class name="DeleteTest"/>
+            <class name="GetAllUsersPositive"/>
+            <class name="GetUserInfoById"/>
         </classes>
     </test>
+
+
 </suite>
 

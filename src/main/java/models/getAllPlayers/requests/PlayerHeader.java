@@ -6,8 +6,6 @@ public class PlayerHeader {
     private String keyName;
     private String keyValue;
 
-    private Properties properties;
-
     public PlayerHeader(Properties properties) {
         this.keyName = properties.getProperty("api.accept");
         this.keyValue = properties.getProperty("api.valueAccept");

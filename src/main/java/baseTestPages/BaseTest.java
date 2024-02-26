@@ -16,7 +16,6 @@ import java.util.Properties;
 public class BaseTest {
 
     protected Properties properties;
-    protected static int userId;
 
     @BeforeClass
     public void setUp() {

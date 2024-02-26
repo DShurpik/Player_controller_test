@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+
 @Log4j
 public class ListenerForAPI implements ITestListener {
 
