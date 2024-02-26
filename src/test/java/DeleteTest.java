@@ -25,8 +25,9 @@ public class DeleteTest extends BaseTest {
 
         NewUserModel newUserModel = createNewUser
                 .createUserRequestSpecification()
+                .pathParam("editor", properties.getProperty("api.supervisor.login"))
                 .when()
-                .get("/create/" + properties.getProperty("api.supervisor.login"))
+                .get("/create/{editor}")
                 .then()
                 .extract()
                 .as(NewUserModel.class);
